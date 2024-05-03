@@ -7,9 +7,20 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+func insertSite(site string, ctx context.Context, db *mongo.Database) {
+	sites := db.Collection("sites")
+	sites.InsertOne(ctx, site)
+}
+
+func allSites(ctx context.Context, db *mongo.Database) {
+	sites := db.Collection("sites")
+	sites.Find(ctx, bson.M{})
+}
 
 func goDotEnvVariable(key string) string {
   err := godotenv.Load(".env.local")
