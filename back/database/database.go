@@ -21,8 +21,6 @@ func goDotEnvVariable(key string) string {
   return os.Getenv(key)
 }
 
-var db *mongo.Client
-
 func Connect() *mongo.Database {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
