@@ -1,9 +1,7 @@
 package main
 
-import (
-	"github.com/goncalojmrosa/shorturl/database"
-)
+import "fmt"
 
 func main() {
-	database.Connect()
+	fmt.Println("Hello, World!")
 }
