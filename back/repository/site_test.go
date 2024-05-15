@@ -13,8 +13,7 @@ import (
 )
 
 func newMongoConnection() *mongo.Client {
-	
-	mongoTestClient, err := mongo.Connect(context.Background(), options.Client().ApplyURI(""))
+	mongoTestClient, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb+srv://goncalojmrosa:h7wzieleOWYfExPE@cluster0.jtdc99n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"))
 
 	if err != nil {
 		log.Fatal(err)
@@ -25,10 +24,9 @@ func newMongoConnection() *mongo.Client {
 	return mongoTestClient
 }
 
-func testeMongoOperations(t *testing.T){
+func TestMongoOperations(t *testing.T){
 	mongoTestClient := newMongoConnection()
 	defer mongoTestClient.Disconnect(context.Background())
-
 	site1 := uuid.New().String()
 
 	coll := mongoTestClient.Database("Cluster0").Collection("sites")
