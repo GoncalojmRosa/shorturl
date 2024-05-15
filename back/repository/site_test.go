@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"testing"
+	"time"
 
 	"github.com/goncalojmrosa/shorturl/model"
 	"github.com/google/uuid"
@@ -39,6 +40,7 @@ func TestMongoOperations(t *testing.T){
 			Url:      "https://www.google.com",
 			ShortUrl: "http://localhost:8080/" + site1,
 			Clicks:   0,
+			CreateAt: time.Now(),
 		}
 
 		result, err := empRepo.CreateSite(&site)
