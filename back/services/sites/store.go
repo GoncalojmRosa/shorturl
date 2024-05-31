@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/goncalojmrosa/shorturl/types"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -46,9 +47,18 @@ func (s *Store) FindAll(ctx context.Context) ([]*types.Site, error) {
 	return results, nil
 }
 
-// FindByShortUrl implements types.SiteStore.
-func (s *Store) FindByShortUrl(shortUrl string) (*types.Site, error) {
-	panic("unimplemented")
+// FindByUrlCode implements types.SiteStore.
+func (s *Store) FindByUrlCode(ctx context.Context, urlCode string) (*types.Site, error) {
+	col := s.db.Database(sitesDatabase).Collection(sitesCollection)
+
+	var site types.Site
+	filter := bson.D{{"shortUrl", urlCode}}
+
+	if err := col.FindOne(ctx, filter).Decode(&site); err != nil {
+		return nil, err
+	}
+
+	return &site, nil
 }
 
 // Insert implements types.SiteStore.

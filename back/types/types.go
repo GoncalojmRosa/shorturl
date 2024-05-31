@@ -3,6 +3,8 @@ package types
 import (
 	"context"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Config struct {
@@ -12,7 +14,7 @@ type Config struct {
 }
 
 type SiteStore interface {
-	FindByShortUrl(shortUrl string) (*Site, error)
+	FindByUrlCode(ctx context.Context, urlCode string) (*Site, error)
 	FindAll(ctx context.Context) ([]*Site, error)
 	Insert(ctx context.Context, site *Site) (*Site, error)
 	Update(site *Site) error
@@ -20,14 +22,13 @@ type SiteStore interface {
 }
 
 type RegisterSitePayload struct {
-	ShortUrl string `json:"url"`
+	Url string `json:"url"`
 }
 
 type Site struct {
-	Id       string    `json:"id" bson:"_id"`
-	Url      string    `json:"url" bson:"url"`
-	ShortUrl string    `json:"shortUrl" bson:"shortUrl"`
-	UrlCode  string    `json:"urlCode" bson:"urlCode"`
-	Clicks   int       `json:"clicks" bson:"clicks"`
-	CreateAt time.Time `json:"createAt" bson:"createAt"`
+	Id       primitive.ObjectID `json:"id" bson:"_id"`
+	Url      string             `json:"url" bson:"url"`
+	ShortUrl string             `json:"shortUrl" bson:"shortUrl"`
+	Clicks   int                `json:"clicks" bson:"clicks"`
+	CreateAt time.Time          `json:"createAt" bson:"createAt"`
 }
