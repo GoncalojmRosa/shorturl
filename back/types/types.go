@@ -14,7 +14,7 @@ type Config struct {
 type SiteStore interface {
 	FindByShortUrl(shortUrl string) (*Site, error)
 	FindAll(ctx context.Context) ([]*Site, error)
-	Insert(ctx context.Context, site *Site) (Site, error)
+	Insert(ctx context.Context, site *Site) (*Site, error)
 	Update(site *Site) error
 	Delete(site *Site) error
 }
