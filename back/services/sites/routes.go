@@ -1,7 +1,6 @@
 package sites
 
 import (
-	"log"
 	"net/http"
 	"time"
 
@@ -52,7 +51,6 @@ func (h *Handler) createSite(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) getSites(w http.ResponseWriter, r *http.Request) {
-	log.Println("Getting all sites")
 	//get all sites
 	sites, err := h.store.FindAll(r.Context())
 	if err != nil {

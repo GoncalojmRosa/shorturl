@@ -28,23 +28,23 @@ func (s *Store) Delete(site *types.Site) error {
 }
 
 // FindAll implements types.SiteStore.
-func (s *Store) FindAll(ctx context.Context) ([]*types.Site, error) {
+func (s *Store) FindAll(ctx context.Context) (*[]types.Site, error) {
 	col := s.db.Database(sitesDatabase).Collection(sitesCollection)
 	fmt.Println(col)
-	var sites types.Site
-	cursor, err := col.Find(ctx, &sites)
+
+	filter := bson.M{}
+
+	cursor, err := col.Find(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
 
-	fmt.Println(cursor)
-
-	var results []*types.Site
+	var results []types.Site
 	if err = cursor.All(ctx, &results); err != nil {
 		return nil, err
 	}
 
-	return results, nil
+	return &results, nil
 }
 
 // FindByUrlCode implements types.SiteStore.
@@ -52,7 +52,7 @@ func (s *Store) FindByUrlCode(ctx context.Context, urlCode string) (*types.Site,
 	col := s.db.Database(sitesDatabase).Collection(sitesCollection)
 
 	var site types.Site
-	filter := bson.D{{"shortUrl", urlCode}}
+	filter := bson.D{{Key: "shortUrl", Value: urlCode}}
 
 	if err := col.FindOne(ctx, filter).Decode(&site); err != nil {
 		return nil, err
