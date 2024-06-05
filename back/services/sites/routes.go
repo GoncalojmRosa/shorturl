@@ -1,6 +1,7 @@
 package sites
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -9,6 +10,8 @@ import (
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+const baseURL = "http://localhost:8080/api/v1/s"
 
 type Handler struct {
 	store types.SiteStore
@@ -34,11 +37,13 @@ func (h *Handler) createSite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	urlCode := utils.GenerateShortUrl()
 	//create site
 	newSite, err := h.store.Insert(r.Context(), &types.Site{
 		Id:       primitive.NewObjectID(),
 		Url:      payload.Url,
-		ShortUrl: utils.GenerateShortUrl(),
+		UrlCode:  urlCode,
+		ShortUrl: fmt.Sprintf("%s/%s", baseURL, urlCode), //generate short url
 		CreateAt: time.Now(),
 	})
 
@@ -70,5 +75,7 @@ func (h *Handler) redirectToSite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.WriteJSON(w, http.StatusOK, site)
+	http.Redirect(w, r, site.Url, http.StatusMovedPermanently)
+
+	//utils.WriteJSON(w, http.StatusOK, site)
 }

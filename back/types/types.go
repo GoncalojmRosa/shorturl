@@ -28,6 +28,7 @@ type RegisterSitePayload struct {
 type Site struct {
 	Id       primitive.ObjectID `json:"id" bson:"_id"`
 	Url      string             `json:"url" bson:"url"`
+	UrlCode  string             `json:"urlCode" bson:"urlCode"`
 	ShortUrl string             `json:"shortUrl" bson:"shortUrl"`
 	Clicks   int                `json:"clicks" bson:"clicks"`
 	CreateAt time.Time          `json:"createAt" bson:"createAt"`

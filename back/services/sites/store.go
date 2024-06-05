@@ -52,7 +52,7 @@ func (s *Store) FindByUrlCode(ctx context.Context, urlCode string) (*types.Site,
 	col := s.db.Database(sitesDatabase).Collection(sitesCollection)
 
 	var site types.Site
-	filter := bson.D{{Key: "shortUrl", Value: urlCode}}
+	filter := bson.D{{Key: "urlCode", Value: urlCode}}
 
 	if err := col.FindOne(ctx, filter).Decode(&site); err != nil {
 		return nil, err
